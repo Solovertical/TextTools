@@ -1,16 +1,11 @@
 package com.corphish.quicktools.repository
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import androidx.preference.PreferenceManager
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
 import io.mockk.verify
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -26,18 +21,12 @@ class ContextMenuOptionsRepositoryImplTest {
 
     @Before
     fun setUp() {
-        mockkStatic(PreferenceManager::class)
         every { context.packageName } returns "com.corphish.quicktools"
         every { context.packageManager } returns packageManager
-        every { PreferenceManager.getDefaultSharedPreferences(context) } returns sharedPreferences
+        every { context.getSharedPreferences("com.corphish.quicktools_preferences", Context.MODE_PRIVATE) } returns sharedPreferences
         every { sharedPreferences.edit() } returns editor
         
         repository = ContextMenuOptionsRepositoryImpl(context)
-    }
-
-    @After
-    fun tearDown() {
-        unmockkStatic(PreferenceManager::class)
     }
 
     @Test
