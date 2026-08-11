@@ -54,6 +54,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -543,7 +544,7 @@ fun TemplateSettings(settingsViewModel: SettingsViewModel) {
 fun AppInfoSettings(
     versionName: String,
     versionCode: Int,
-    uriHandler: androidx.compose.ui.platform.UriHandler
+    uriHandler: UriHandler
 ) {
     val listItemColors = ListItemDefaults.colors(containerColor = Color.Transparent)
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -603,7 +604,7 @@ fun AppInfoSettings(
 }
 
 @Composable
-fun DonateSettings(uriHandler: androidx.compose.ui.platform.UriHandler) {
+fun DonateSettings(uriHandler: UriHandler) {
     val listItemColors = ListItemDefaults.colors(containerColor = Color.Transparent)
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
