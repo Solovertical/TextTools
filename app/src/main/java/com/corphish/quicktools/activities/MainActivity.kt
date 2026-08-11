@@ -266,40 +266,41 @@ fun EditModesSection(
     shouldEdit: Boolean,
     onEditToggle: () -> Unit
 ) {
-    Surface(
-        tonalElevation = 2.dp,
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(id = R.string.edit),
-                style = TypographyV2.labelSmall,
-                fontFamily = BrandFontFamily,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Text(
-                text = stringResource(id = R.string.edit_modes),
-                style = Typography.bodyMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Button(
-                onClick = onEditToggle,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    painterResource(if (shouldEdit) R.drawable.ic_done else R.drawable.ic_edit),
-                    contentDescription = stringResource(if (shouldEdit) R.string.done else R.string.edit)
-                )
+    Column {
+        Text(
+            text = stringResource(id = R.string.edit),
+            style = TypographyV2.labelSmall,
+            fontFamily = BrandFontFamily,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Surface(
+            tonalElevation = 2.dp,
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = stringResource(id = if (shouldEdit) R.string.done else R.string.edit),
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = TypographyV2.labelMedium,
-                    fontWeight = FontWeight.W600
+                    text = stringResource(id = R.string.edit_modes),
+                    style = Typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
+
+                Button(
+                    onClick = onEditToggle,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        painterResource(if (shouldEdit) R.drawable.ic_done else R.drawable.ic_edit),
+                        contentDescription = stringResource(if (shouldEdit) R.string.done else R.string.edit)
+                    )
+                    Text(
+                        text = stringResource(id = if (shouldEdit) R.string.done else R.string.edit),
+                        modifier = Modifier.padding(start = 16.dp),
+                        style = TypographyV2.labelMedium,
+                        fontWeight = FontWeight.W600
+                    )
+                }
             }
         }
     }
@@ -308,47 +309,48 @@ fun EditModesSection(
 @Composable
 fun SimulateSection() {
     val context = LocalContext.current
-    Surface(
-        tonalElevation = 2.dp,
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(id = R.string.simulate),
-                style = TypographyV2.labelSmall,
-                fontFamily = BrandFontFamily,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Text(
-                text = stringResource(id = R.string.simulate_desc),
-                style = Typography.bodyMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Button(
-                onClick = {
-                    context.startActivity(
-                        Intent(
-                            context,
-                            SimulationActivity::class.java
-                        )
-                    )
-                },
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Icon(
-                    painterResource(R.drawable.ic_simulate),
-                    contentDescription = stringResource(R.string.simulate)
-                )
+    Column {
+        Text(
+            text = stringResource(id = R.string.simulate),
+            style = TypographyV2.labelSmall,
+            fontFamily = BrandFontFamily,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Surface(
+            tonalElevation = 2.dp,
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = stringResource(id = R.string.simulate),
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = TypographyV2.labelMedium,
-                    fontWeight = FontWeight.W600
+                    text = stringResource(id = R.string.simulate_desc),
+                    style = Typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
+
+                Button(
+                    onClick = {
+                        context.startActivity(
+                            Intent(
+                                context,
+                                SimulationActivity::class.java
+                            )
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Icon(
+                        painterResource(R.drawable.ic_simulate),
+                        contentDescription = stringResource(R.string.simulate)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.simulate),
+                        modifier = Modifier.padding(start = 16.dp),
+                        style = TypographyV2.labelMedium,
+                        fontWeight = FontWeight.W600
+                    )
+                }
             }
         }
     }
@@ -357,62 +359,63 @@ fun SimulateSection() {
 @Composable
 fun OssSection() {
     val uriHandler = LocalUriHandler.current
-    Surface(
-        tonalElevation = 2.dp,
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(id = R.string.oss_info),
-                style = TypographyV2.labelSmall,
-                fontFamily = BrandFontFamily,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
+    Column {
+        Text(
+            text = stringResource(id = R.string.oss_info),
+            style = TypographyV2.labelSmall,
+            fontFamily = BrandFontFamily,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Surface(
+            tonalElevation = 2.dp,
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = stringResource(id = R.string.oss_desc),
+                    style = Typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
 
-            Text(
-                text = stringResource(id = R.string.oss_desc),
-                style = Typography.bodyMedium,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-
-            Row(
-                modifier = Modifier.horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Button(
-                    onClick = { uriHandler.openUri(Constants.SOURCE_LINK) }
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Icon(
-                        painterResource(id = R.drawable.ic_open_in_new),
-                        contentDescription = stringResource(R.string.oss_check)
-                    )
-                    Text(
-                        text = stringResource(id = R.string.oss_check),
-                        modifier = Modifier.padding(start = 8.dp),
-                        style = TypographyV2.labelMedium,
-                        fontWeight = FontWeight.W600,
-                        maxLines = 1
-                    )
-                }
+                    Button(
+                        onClick = { uriHandler.openUri(Constants.SOURCE_LINK) }
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.ic_open_in_new),
+                            contentDescription = stringResource(R.string.oss_check)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.oss_check),
+                            modifier = Modifier.padding(start = 8.dp),
+                            style = TypographyV2.labelMedium,
+                            fontWeight = FontWeight.W600,
+                            maxLines = 1
+                        )
+                    }
 
-                Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
 
-                Button(
-                    onClick = { uriHandler.openUri(Constants.CONTRIBUTORS_LINK) }
-                ) {
-                    Icon(
-                        painterResource(id = R.drawable.ic_open_in_new),
-                        contentDescription = stringResource(R.string.contributors)
-                    )
-                    Text(
-                        text = stringResource(id = R.string.contributors),
-                        modifier = Modifier.padding(start = 8.dp),
-                        style = TypographyV2.labelMedium,
-                        fontWeight = FontWeight.W600,
-                        maxLines = 1
-                    )
+                    Button(
+                        onClick = { uriHandler.openUri(Constants.CONTRIBUTORS_LINK) }
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.ic_open_in_new),
+                            contentDescription = stringResource(R.string.contributors)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.contributors),
+                            modifier = Modifier.padding(start = 8.dp),
+                            style = TypographyV2.labelMedium,
+                            fontWeight = FontWeight.W600,
+                            maxLines = 1
+                        )
+                    }
                 }
             }
         }
