@@ -275,4 +275,10 @@
     <string name="template_type">Template type</string>
     <string name="plain_text">Plain text</string>
     <string name="url">URL</string>
+    <string name="info">Info</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
+    <string name="back">Back</string>
+    <string name="previous">Previous</string>
 </resources>

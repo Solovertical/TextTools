@@ -222,7 +222,7 @@ fun ActionsLayout(
                                 IntentAction.COPY_TO_CLIPBOARD -> R.drawable.ic_copy
                             }
                         ),
-                        contentDescription = null
+                        contentDescription = stringResource(R.string.text_actions)
                     )
 
                     Spacer(modifier = Modifier.width(16.dp))

@@ -229,7 +229,7 @@ fun SettingsSection(
         ) {
             Icon(
                 painterResource(icon),
-                contentDescription = null,
+                contentDescription = stringResource(title),
                 modifier = Modifier.size(16.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
@@ -527,7 +527,7 @@ fun TemplateSettings(settingsViewModel: SettingsViewModel) {
         leadingContent = {
             Icon(
                 painterResource(R.drawable.ic_delete),
-                contentDescription = null,
+                contentDescription = stringResource(R.string.delete),
                 tint = MaterialTheme.colorScheme.error,
                 modifier = Modifier.size(24.dp)
             )
@@ -565,7 +565,7 @@ fun AppInfoSettings(
             leadingContent = {
                 Icon(
                     painterResource(R.drawable.ic_info),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.app_info),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )
@@ -592,7 +592,7 @@ fun AppInfoSettings(
             leadingContent = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_open_in_new),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.releases),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )
@@ -623,7 +623,7 @@ fun DonateSettings(uriHandler: UriHandler) {
             leadingContent = {
                 Icon(
                     painterResource(R.drawable.ic_volunteer),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.donate),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )

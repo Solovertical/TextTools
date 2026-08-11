@@ -103,7 +103,8 @@ fun Greeting(
     var shouldEdit by remember { mutableStateOf(false) }
 
     val adaptiveInfo = currentWindowAdaptiveInfo()
-    val isWideScreen = adaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+    val isWideScreen =
+        adaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 
     Scaffold(
         floatingActionButton = {
@@ -112,7 +113,10 @@ fun Greeting(
                     context.startActivity(Intent(context, SettingsActivity::class.java))
                 },
             ) {
-                Icon(painterResource(R.drawable.ic_settings), "Settings")
+                Icon(
+                    painterResource(R.drawable.ic_settings),
+                    stringResource(R.string.title_activity_settings)
+                )
             }
         }) { paddingValues ->
         val commonModifier = Modifier
@@ -288,7 +292,7 @@ fun EditModesSection(
             ) {
                 Icon(
                     painterResource(if (shouldEdit) R.drawable.ic_done else R.drawable.ic_edit),
-                    contentDescription = ""
+                    contentDescription = stringResource(if (shouldEdit) R.string.done else R.string.edit)
                 )
                 Text(
                     text = stringResource(id = if (shouldEdit) R.string.done else R.string.edit),
@@ -325,10 +329,20 @@ fun SimulateSection() {
             )
 
             Button(
-                onClick = { context.startActivity(Intent(context, SimulationActivity::class.java)) },
+                onClick = {
+                    context.startActivity(
+                        Intent(
+                            context,
+                            SimulationActivity::class.java
+                        )
+                    )
+                },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Icon(painterResource(R.drawable.ic_simulate), contentDescription = "")
+                Icon(
+                    painterResource(R.drawable.ic_simulate),
+                    contentDescription = stringResource(R.string.simulate)
+                )
                 Text(
                     text = stringResource(id = R.string.simulate),
                     modifier = Modifier.padding(start = 16.dp),
@@ -370,7 +384,10 @@ fun OssSection() {
                 Button(
                     onClick = { uriHandler.openUri(Constants.SOURCE_LINK) }
                 ) {
-                    Icon(painterResource(id = R.drawable.ic_open_in_new), contentDescription = "")
+                    Icon(
+                        painterResource(id = R.drawable.ic_open_in_new),
+                        contentDescription = stringResource(R.string.oss_check)
+                    )
                     Text(
                         text = stringResource(id = R.string.oss_check),
                         modifier = Modifier.padding(start = 8.dp),
@@ -385,7 +402,10 @@ fun OssSection() {
                 Button(
                     onClick = { uriHandler.openUri(Constants.CONTRIBUTORS_LINK) }
                 ) {
-                    Icon(painterResource(id = R.drawable.ic_open_in_new), contentDescription = "")
+                    Icon(
+                        painterResource(id = R.drawable.ic_open_in_new),
+                        contentDescription = stringResource(R.string.contributors)
+                    )
                     Text(
                         text = stringResource(id = R.string.contributors),
                         modifier = Modifier.padding(start = 8.dp),
@@ -437,7 +457,9 @@ fun FeatureItem(
                             style = Typography.bodyMedium.copy(fontWeight = FontWeight.W500),
                             color = MaterialTheme.colorScheme.primary,
                             maxLines = 1,
-                            modifier = Modifier.padding(start = 8.dp).basicMarquee()
+                            modifier = Modifier
+                                .padding(start = 8.dp)
+                                .basicMarquee()
                         )
                     }
                 }
@@ -458,11 +480,12 @@ fun FeatureItem(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary), contentAlignment = Alignment.Center
+                        .background(MaterialTheme.colorScheme.primary),
+                    contentAlignment = Alignment.Center
                 ) {
                     Image(
                         painterResource(id = feature.icon),
-                        contentDescription = "",
+                        contentDescription = stringResource(feature.featureTitle),
                         modifier = Modifier.size(32.dp),
                         colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onPrimary)
                     )

@@ -425,7 +425,7 @@ fun FeatureItem(label: String, value: String, context: Context) {
             )
             if (value.isNotEmpty()) {
                 IconButton(onClick = { copyToClipboard(context, value, toastText) }) {
-                    Icon(painterResource(R.drawable.ic_copy), contentDescription = "Copy", modifier = Modifier.size(18.dp))
+                    Icon(painterResource(R.drawable.ic_copy), contentDescription = stringResource(R.string.copy), modifier = Modifier.size(18.dp))
                 }
             }
         }
@@ -444,7 +444,7 @@ fun FeatureListItems(label: String, values: List<String>, context: Context) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = value, style = TypographyV2.bodyMedium, modifier = Modifier.weight(1f))
                     IconButton(onClick = { copyToClipboard(context, value, toastText) }) {
-                        Icon(painterResource(R.drawable.ic_copy), contentDescription = "Copy", modifier = Modifier.size(18.dp))
+                        Icon(painterResource(R.drawable.ic_copy), contentDescription = stringResource(R.string.copy), modifier = Modifier.size(18.dp))
                     }
                 }
             }

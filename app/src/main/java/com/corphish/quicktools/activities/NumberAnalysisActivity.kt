@@ -505,7 +505,7 @@ fun AnalysisSection(
                 ) {
                     Icon(
                         painter = icon,
-                        contentDescription = null,
+                        contentDescription = title,
                         modifier = Modifier.size(20.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -533,7 +533,7 @@ fun SectionHeader(title: String, icon: Painter? = null) {
             if (icon != null) {
                 Icon(
                     painter = icon,
-                    contentDescription = null,
+                    contentDescription = title,
                     modifier = Modifier.size(20.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
