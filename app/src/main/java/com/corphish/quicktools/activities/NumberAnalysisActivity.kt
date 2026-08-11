@@ -59,6 +59,7 @@ import com.corphish.quicktools.R
 import com.corphish.quicktools.data.Constants
 import com.corphish.quicktools.data.NumberAnalysisResult
 import com.corphish.quicktools.ui.common.CustomTopAppBar
+import com.corphish.quicktools.ui.theme.BrandFontFamily
 import com.corphish.quicktools.ui.theme.QuickToolsTheme
 import com.corphish.quicktools.viewmodels.NumberAnalysisViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -363,7 +364,8 @@ fun InputSection(
             text = stringResource(R.string.input),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = BrandFontFamily
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -455,7 +457,8 @@ fun AnalysisSection(
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier.padding(start = 8.dp),
+                        fontFamily = BrandFontFamily
                     )
                 }
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -483,7 +486,8 @@ fun SectionHeader(title: String, icon: Painter? = null) {
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(start = if (icon != null) 8.dp else 0.dp)
+                modifier = Modifier.padding(start = if (icon != null) 8.dp else 0.dp),
+                fontFamily = BrandFontFamily
             )
         }
     }
