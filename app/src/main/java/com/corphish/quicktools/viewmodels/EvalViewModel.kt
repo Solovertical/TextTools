@@ -1,23 +1,19 @@
 package com.corphish.quicktools.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.repository.SettingsRepository
 import com.corphish.quicktools.usecases.ClipboardUseCase
+import com.corphish.quicktools.usecases.EvalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import net.objecthunter.exp4j.ExpressionBuilder
-import java.text.DecimalFormat
 import javax.inject.Inject
-import kotlin.math.ceil
-import kotlin.math.floor
 
 @HiltViewModel
 class EvalViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
+    private val evalUseCase: EvalUseCase,
     private val clipboardUseCase: ClipboardUseCase,
 ) : ViewModel() {
     private val _evalMode = MutableStateFlow(settingsRepository.getEvaluateResultMode())
@@ -47,19 +43,12 @@ class EvalViewModel @Inject constructor(
     val evalResult: StateFlow<Result<EvaluateResult>> = _evalResult
 
     fun evaluate(text: String) {
-        viewModelScope.launch {
-            val decimalPoints = settingsRepository.getDecimalPoints()
-            try {
-                val expression = ExpressionBuilder(text).build()
-                val result = expression.evaluate()
+        val decimalPoints = settingsRepository.getDecimalPoints()
 
+        when (val result = evalUseCase.execute(text, decimalPoints)) {
+            is Result.Success -> {
                 val evalResult = EvaluateResult(
-                    resultString = if (ceil(result) == floor(result)) {
-                        result.toInt().toString()
-                    } else {
-                        val decimalFormat = DecimalFormat("0.${"#".repeat(decimalPoints)}")
-                        decimalFormat.format(result)
-                    },
+                    resultString = result.value,
                     finalMode = _userSelectedMode
                 )
 
@@ -68,9 +57,10 @@ class EvalViewModel @Inject constructor(
                 }
 
                 _evalResult.value = Result.Success(evalResult)
-            } catch (e: Exception) {
-                _evalResult.value = Result.Error
             }
+
+            is Result.Error -> _evalResult.value = Result.Error
+            is Result.Initial -> Unit
         }
     }
 

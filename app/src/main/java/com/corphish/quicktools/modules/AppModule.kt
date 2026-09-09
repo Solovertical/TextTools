@@ -2,6 +2,8 @@ package com.corphish.quicktools.modules
 
 import com.corphish.quicktools.repository.ContextMenuOptionsRepository
 import com.corphish.quicktools.repository.ContextMenuOptionsRepositoryImpl
+import com.corphish.quicktools.repository.EvalRepository
+import com.corphish.quicktools.repository.EvalRepositoryImpl
 import com.corphish.quicktools.repository.NumberAnalysisRepository
 import com.corphish.quicktools.repository.NumberAnalysisRepositoryImpl
 import com.corphish.quicktools.repository.SettingsRepository
@@ -67,4 +69,8 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindTextTemplateRepository(impl: TextTemplateRepositoryImpl): TextTemplateRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindEvalRepository(impl: EvalRepositoryImpl): EvalRepository
 }

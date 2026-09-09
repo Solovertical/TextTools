@@ -4,6 +4,7 @@ import com.corphish.quicktools.MainDispatcherRule
 import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.repository.SettingsRepository
 import com.corphish.quicktools.usecases.ClipboardUseCase
+import com.corphish.quicktools.usecases.EvalUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -23,20 +24,22 @@ class EvalViewModelTest {
 
     private lateinit var viewModel: EvalViewModel
     private val settingsRepository: SettingsRepository = mockk(relaxed = true)
+    private val evalUseCase: EvalUseCase = mockk()
     private val clipboardUseCase: ClipboardUseCase = mockk(relaxed = true)
 
     @Before
     fun setUp() {
         every { settingsRepository.getEvaluateResultMode() } returns EvalViewModel.EVAL_RESULT_MODE_ASK_NEXT_TIME
-        viewModel = EvalViewModel(settingsRepository, clipboardUseCase)
+        viewModel = EvalViewModel(settingsRepository, evalUseCase, clipboardUseCase)
     }
 
     @Test
     fun testEvaluate_Success() = runTest {
         every { settingsRepository.getDecimalPoints() } returns 2
-        
+        every { evalUseCase.execute("2 + 2", 2) } returns Result.Success("4")
+
         viewModel.evaluate("2 + 2")
-        
+
         val result = viewModel.evalResult.value
         assertTrue(result is Result.Success)
         assertEquals("4", (result as Result.Success).value.resultString)
@@ -45,9 +48,10 @@ class EvalViewModelTest {
     @Test
     fun testEvaluate_SuccessWithDecimals() = runTest {
         every { settingsRepository.getDecimalPoints() } returns 2
-        
+        every { evalUseCase.execute("5 / 2", 2) } returns Result.Success("2.5")
+
         viewModel.evaluate("5 / 2")
-        
+
         val result = viewModel.evalResult.value
         assertTrue(result is Result.Success)
         assertEquals("2.5", (result as Result.Success).value.resultString)
@@ -55,8 +59,11 @@ class EvalViewModelTest {
 
     @Test
     fun testEvaluate_Error() = runTest {
+        every { settingsRepository.getDecimalPoints() } returns 2
+        every { evalUseCase.execute("invalid expression", 2) } returns Result.Error
+
         viewModel.evaluate("invalid expression")
-        
+
         val result = viewModel.evalResult.value
         assertTrue(result is Result.Error)
     }
@@ -64,10 +71,11 @@ class EvalViewModelTest {
     @Test
     fun testEvaluate_CopyToClipboard() = runTest {
         every { settingsRepository.getDecimalPoints() } returns 2
+        every { evalUseCase.execute("10 * 10", 2) } returns Result.Success("100")
         viewModel.denoteModeSelectionByUser(EvalViewModel.EVAL_RESULT_COPY_TO_CLIPBOARD)
-        
+
         viewModel.evaluate("10 * 10")
-        
+
         verify { clipboardUseCase.copyToClipboard("100") }
     }
 
