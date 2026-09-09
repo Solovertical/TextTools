@@ -1,62 +1,26 @@
 package com.corphish.quicktools.repository
 
-import android.content.Context
-import androidx.core.content.edit
-import com.corphish.quicktools.viewmodels.EvalViewModel.Companion.EVAL_RESULT_MODE_ASK_NEXT_TIME
+/**
+ * Repository for user-configurable app settings persisted via SharedPreferences.
+ */
+interface SettingsRepository {
+    fun getPrependCountryCodeEnabled(): Boolean
 
-class SettingsRepository(
-    context: Context
-) {
-    private val _prependCCEnabledKey = "prepend_country_code_enabled"
-    private val _prependCCKey = "prepend_country_code"
-    private val _decimalPoints = "decimal_points"
-    private val _evaluateResultMode = "eval_result_mode"
-    private val _onboardingDone = "onboarding_done"
+    fun setPrependCountryCodeEnabled(enabled: Boolean)
 
-    private val _sharedPreferenceManager = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
+    fun getPrependCountryCode(): String?
 
-    fun getPrependCountryCodeEnabled() =
-        _sharedPreferenceManager.getBoolean(_prependCCEnabledKey, false)
+    fun setPrependCountryCode(code: String)
 
-    fun setPrependCountryCodeEnabled(enabled: Boolean) {
-        _sharedPreferenceManager.edit {
-            putBoolean(_prependCCEnabledKey, enabled)
-        }
-    }
+    fun getDecimalPoints(): Int
 
-    fun getPrependCountryCode() =
-        _sharedPreferenceManager.getString(_prependCCKey, "")
+    fun setDecimalPoints(points: Int)
 
-    fun setPrependCountryCode(code: String) {
-        _sharedPreferenceManager.edit {
-            putString(_prependCCKey, code)
-        }
-    }
+    fun getEvaluateResultMode(): Int
 
-    fun getDecimalPoints() =
-        _sharedPreferenceManager.getInt(_decimalPoints, 2)
+    fun setEvaluateResultMode(mode: Int)
 
-    fun setDecimalPoints(points: Int) {
-        _sharedPreferenceManager.edit {
-            putInt(_decimalPoints, points)
-        }
-    }
+    fun getOnboardingDone(): Boolean
 
-    fun getEvaluateResultMode() =
-        _sharedPreferenceManager.getInt(_evaluateResultMode, EVAL_RESULT_MODE_ASK_NEXT_TIME)
-
-    fun setEvaluateResultMode(mode: Int) {
-        _sharedPreferenceManager.edit {
-            putInt(_evaluateResultMode, mode)
-        }
-    }
-
-    fun getOnboardingDone() =
-        _sharedPreferenceManager.getBoolean(_onboardingDone, false)
-
-    fun setOnboardingDone(done: Boolean) {
-        _sharedPreferenceManager.edit {
-            putBoolean(_onboardingDone, done)
-        }
-    }
+    fun setOnboardingDone(done: Boolean)
 }

@@ -9,9 +9,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class SettingsRepositoryTest {
+class SettingsRepositoryImplTest {
 
-    private lateinit var repository: SettingsRepository
+    private lateinit var repository: SettingsRepositoryImpl
     private val context: Context = mockk()
     private val sharedPreferences: SharedPreferences = mockk()
     private val editor: SharedPreferences.Editor = mockk(relaxed = true)
@@ -21,8 +21,8 @@ class SettingsRepositoryTest {
         every { context.packageName } returns "com.corphish.quicktools"
         every { context.getSharedPreferences("com.corphish.quicktools_preferences", Context.MODE_PRIVATE) } returns sharedPreferences
         every { sharedPreferences.edit() } returns editor
-        
-        repository = SettingsRepository(context)
+
+        repository = SettingsRepositoryImpl(context)
     }
 
     @Test

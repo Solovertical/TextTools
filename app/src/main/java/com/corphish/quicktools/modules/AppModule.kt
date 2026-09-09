@@ -13,6 +13,7 @@ import com.corphish.quicktools.repository.ContextMenuOptionsRepositoryImpl
 import com.corphish.quicktools.repository.NumberAnalysisRepository
 import com.corphish.quicktools.repository.NumberAnalysisRepositoryImpl
 import com.corphish.quicktools.repository.SettingsRepository
+import com.corphish.quicktools.repository.SettingsRepositoryImpl
 import com.corphish.quicktools.repository.TextActionRepository
 import com.corphish.quicktools.repository.TextActionRepositoryImpl
 import com.corphish.quicktools.repository.TextAnalysisRepository
@@ -37,8 +38,8 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideSettingsRepository(@ApplicationContext context: Context) =
-        SettingsRepository(context)
+    fun provideSettingsRepository(@ApplicationContext context: Context): SettingsRepository =
+        SettingsRepositoryImpl(context)
 
     @Provides
     @Singleton
