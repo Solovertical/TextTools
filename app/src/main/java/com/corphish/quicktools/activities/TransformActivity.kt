@@ -50,6 +50,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,6 +59,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.corphish.quicktools.R
 import com.corphish.quicktools.data.Constants
+import com.corphish.quicktools.data.TextInputType
 import com.corphish.quicktools.ui.common.CustomTopAppBar
 import com.corphish.quicktools.ui.common.InputAndPreviewTextField
 import com.corphish.quicktools.ui.common.ListDialog
@@ -431,7 +433,7 @@ fun TransformOptionsBody(
                     value = secondaryFunctionText,
                     enabled = secondaryFunctionTextEnabled,
                     onValueChange = { viewModel.setSecondaryText(it) },
-                    keyboardOptions = KeyboardOptions(keyboardType = secondaryFunctionTextInputType),
+                    keyboardOptions = KeyboardOptions(keyboardType = secondaryFunctionTextInputType.toKeyboardType()),
                     label = { Text(stringResource(id = secondaryFunctionTextLabel)) },
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -456,6 +458,11 @@ fun TransformOptionsBody(
             )
         }
     }
+}
+
+private fun TextInputType.toKeyboardType(): KeyboardType = when (this) {
+    TextInputType.NUMBER -> KeyboardType.Number
+    TextInputType.TEXT -> KeyboardType.Text
 }
 
 @Composable

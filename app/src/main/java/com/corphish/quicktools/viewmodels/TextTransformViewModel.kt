@@ -1,10 +1,10 @@
 package com.corphish.quicktools.viewmodels
 
 import android.content.res.Resources
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewModelScope
 import com.corphish.quicktools.R
 import com.corphish.quicktools.data.Result
+import com.corphish.quicktools.data.TextInputType
 import com.corphish.quicktools.data.TextTransformIndex.INDEX_ADD_PREFIX_SUFFIX
 import com.corphish.quicktools.data.TextTransformIndex.INDEX_APPEND_LINES
 import com.corphish.quicktools.data.TextTransformIndex.INDEX_CHANGE_CASE
@@ -53,7 +53,7 @@ class TextTransformViewModel @Inject constructor (
     private val _secondaryFunctionTextLabel = MutableStateFlow(Resources.ID_NULL)
     val secondaryFunctionTextLabel = _secondaryFunctionTextLabel.asStateFlow()
 
-    private val _secondaryFunctionTextInputType = MutableStateFlow(KeyboardType.Text)
+    private val _secondaryFunctionTextInputType = MutableStateFlow(TextInputType.TEXT)
     val secondaryFunctionTextInputType = _secondaryFunctionTextInputType.asStateFlow()
 
     private val _secondaryFunctionTextEnabled = MutableStateFlow(true)
@@ -148,9 +148,9 @@ class TextTransformViewModel @Inject constructor (
                     INDEX_SQUEEZE
                 )
             ) {
-                KeyboardType.Number
+                TextInputType.NUMBER
             } else {
-                KeyboardType.Text
+                TextInputType.TEXT
             }
 
         // Disable when remove option is selected for preset characters, or for custom wrap
