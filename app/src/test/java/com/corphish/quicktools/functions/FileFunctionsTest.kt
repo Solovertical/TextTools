@@ -6,6 +6,7 @@ import android.net.Uri
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -30,7 +31,7 @@ class FileFunctionsTest {
     }
 
     @Test
-    fun testSaveTextToUri_Success() {
+    fun testSaveTextToUri_Success() = runTest {
         val uriString = "content://test"
         val text = "hello world"
         val uri: Uri = mockk()
@@ -46,13 +47,13 @@ class FileFunctionsTest {
     }
 
     @Test
-    fun testSaveTextToUri_EmptyUri() {
+    fun testSaveTextToUri_EmptyUri() = runTest {
         val result = fileFunctions.saveTextToUri("", "text")
         assertFalse(result)
     }
 
     @Test
-    fun testSaveTextToUri_IOException() {
+    fun testSaveTextToUri_IOException() = runTest {
         val uriString = "content://test"
         val uri: Uri = mockk()
         every { Uri.parse(uriString) } returns uri

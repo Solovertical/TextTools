@@ -1,9 +1,10 @@
 package com.corphish.quicktools.usecases
 
 import com.corphish.quicktools.repository.TextRepository
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -13,14 +14,14 @@ class SaveTextUseCaseTest {
     private val useCase = SaveTextUseCase(textRepository)
 
     @Test
-    fun testExecute() {
+    fun testExecute() = runTest {
         val uriString = "content://test"
         val text = "hello"
-        every { textRepository.writeText(uriString, text) } returns true
+        coEvery { textRepository.writeText(uriString, text) } returns true
 
         val result = useCase.execute(uriString, text)
 
         assertTrue(result)
-        verify { textRepository.writeText(uriString, text) }
+        coVerify { textRepository.writeText(uriString, text) }
     }
 }

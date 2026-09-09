@@ -16,7 +16,7 @@ class SaveTextUseCase @Inject constructor(
      * @param text Text to save.
      * @return Boolean indicating success.
      */
-    fun execute(uriString: String, text: String): Boolean {
+    suspend fun execute(uriString: String, text: String): Boolean {
         return textRepository.writeText(uriString, text)
     }
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 class TextRepositoryImpl @Inject constructor(
     private val fileFunctions: FileFunctions
 ): TextRepository {
-    override fun writeText(uriString: String, text: String): Boolean {
+    override suspend fun writeText(uriString: String, text: String): Boolean {
         return fileFunctions.saveTextToUri(uriString, text)
     }
 }

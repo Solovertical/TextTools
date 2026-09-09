@@ -11,5 +11,5 @@ interface TextRepository {
      * @param text Text to write.
      * @return Boolean indicating success state.
      */
-    fun writeText(uriString: String, text: String): Boolean
+    suspend fun writeText(uriString: String, text: String): Boolean
 }

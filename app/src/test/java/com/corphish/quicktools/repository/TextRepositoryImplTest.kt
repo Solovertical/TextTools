@@ -1,8 +1,9 @@
 package com.corphish.quicktools.repository
 
 import com.corphish.quicktools.functions.FileFunctions
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -19,24 +20,24 @@ class TextRepositoryImplTest {
     }
 
     @Test
-    fun testWriteText_Success() {
+    fun testWriteText_Success() = runTest {
         val uriString = "content://test"
         val text = "hello world"
-        every { fileFunctions.saveTextToUri(uriString, text) } returns true
-        
+        coEvery { fileFunctions.saveTextToUri(uriString, text) } returns true
+
         val result = repository.writeText(uriString, text)
-        
+
         assertTrue(result)
     }
 
     @Test
-    fun testWriteText_Failure() {
+    fun testWriteText_Failure() = runTest {
         val uriString = "content://test"
         val text = "hello world"
-        every { fileFunctions.saveTextToUri(uriString, text) } returns false
-        
+        coEvery { fileFunctions.saveTextToUri(uriString, text) } returns false
+
         val result = repository.writeText(uriString, text)
-        
+
         assertFalse(result)
     }
 }

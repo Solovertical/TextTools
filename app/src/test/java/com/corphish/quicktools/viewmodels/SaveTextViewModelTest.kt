@@ -4,6 +4,7 @@ import android.net.Uri
 import com.corphish.quicktools.MainDispatcherRule
 import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.usecases.SaveTextUseCase
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,10 +35,10 @@ class SaveTextViewModelTest {
         every { uri.toString() } returns uriString
         
         val text = "hello world"
-        every { saveTextUseCase.execute(uriString, text) } returns true
-        
+        coEvery { saveTextUseCase.execute(uriString, text) } returns true
+
         viewModel.saveText(uri, text)
-        
+
         val status = viewModel.saveTextStatus.value
         assertTrue(status is Result.Success)
     }
@@ -49,10 +50,10 @@ class SaveTextViewModelTest {
         every { uri.toString() } returns uriString
         
         val text = "hello world"
-        every { saveTextUseCase.execute(uriString, text) } returns false
-        
+        coEvery { saveTextUseCase.execute(uriString, text) } returns false
+
         viewModel.saveText(uri, text)
-        
+
         val status = viewModel.saveTextStatus.value
         assertTrue(status is Result.Error)
     }
