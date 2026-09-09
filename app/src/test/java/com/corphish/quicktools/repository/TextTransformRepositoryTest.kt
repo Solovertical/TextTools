@@ -1,10 +1,12 @@
 package com.corphish.quicktools.repository
 
+import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.functions.TextFunctions
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -21,66 +23,66 @@ class TextTransformRepositoryTest {
     @Test
     fun testTransform_None() {
         val result = repository.transform("hello", TextTransformRepositoryImpl.INDEX_NONE, 0, "")
-        assertEquals("hello", result)
+        assertEquals("hello", (result as Result.Success).value)
     }
 
     @Test
     fun testTransform_WrapText_Preset() {
         every { textFunctions.presetWrap("hello", 2) } returns "(hello)"
-        
+
         val result = repository.transform("hello", TextTransformRepositoryImpl.INDEX_WRAP_TEXT, 2, "")
-        
-        assertEquals("(hello)", result)
+
+        assertEquals("(hello)", (result as Result.Success).value)
         verify { textFunctions.presetWrap("hello", 2) }
     }
 
     @Test
     fun testTransform_WrapText_Custom() {
         every { textFunctions.customWrap("hello", "**") } returns "**hello**"
-        
+
         val result = repository.transform("hello", TextTransformRepositoryImpl.INDEX_WRAP_TEXT, 5, "**")
-        
-        assertEquals("**hello**", result)
+
+        assertEquals("**hello**", (result as Result.Success).value)
         verify { textFunctions.customWrap("hello", "**") }
     }
 
     @Test
     fun testTransform_ChangeCase() {
         every { textFunctions.changeCase("hello", 0) } returns "HELLO"
-        
+
         val result = repository.transform("hello", TextTransformRepositoryImpl.INDEX_CHANGE_CASE, 0, "")
-        
-        assertEquals("HELLO", result)
+
+        assertEquals("HELLO", (result as Result.Success).value)
         verify { textFunctions.changeCase("hello", 0) }
     }
 
     @Test
     fun testTransform_RepeatText() {
         every { textFunctions.repeatText("abc", 3) } returns "abcabcabc"
-        
+
         val result = repository.transform("abc", TextTransformRepositoryImpl.INDEX_REPEAT_TEXT, 0, "3")
-        
-        assertEquals("abcabcabc", result)
+
+        assertEquals("abcabcabc", (result as Result.Success).value)
         verify { textFunctions.repeatText("abc", 3) }
     }
 
     @Test
     fun testTransform_RemoveText() {
         every { textFunctions.removeText("hello", "l", 0) } returns "helo"
-        
+
         val result = repository.transform("hello", TextTransformRepositoryImpl.INDEX_REMOVE_TEXT, 0, "l")
-        
-        assertEquals("helo", result)
+
+        assertEquals("helo", (result as Result.Success).value)
         verify { textFunctions.removeText("hello", "l", 0) }
     }
 
     @Test
     fun testTransform_RemoveWhiteSpaces() {
         every { textFunctions.removeWhiteSpaces("a b c") } returns "abc"
-        
+
         val result = repository.transform("a b c", TextTransformRepositoryImpl.INDEX_REMOVE_TEXT, 3, "")
-        
-        assertEquals("abc", result)
+
+        assertEquals("abc", (result as Result.Success).value)
         verify { textFunctions.removeWhiteSpaces("a b c") }
     }
 
@@ -88,13 +90,23 @@ class TextTransformRepositoryTest {
     fun testTransform_DecorateText() {
         every { textFunctions.clearUnicodeFormatting("hello") } returns "hello"
         every { textFunctions.boldSerif("hello") } returns "𝐛𝐞𝐥𝐥𝐨"
-        
+
         val result = repository.transform("hello", TextTransformRepositoryImpl.INDEX_DECORATE_TEXT, 0, "")
-        
-        assertEquals("𝐛𝐞𝐥𝐥𝐨", result)
-        verify { 
+
+        assertEquals("𝐛𝐞𝐥𝐥𝐨", (result as Result.Success).value)
+        verify {
             textFunctions.clearUnicodeFormatting("hello")
             textFunctions.boldSerif("hello")
         }
+    }
+
+    @Test
+    fun testTransform_DecorateText_OutOfBounds_ReturnsError() {
+        every { textFunctions.clearUnicodeFormatting("hello") } returns "hello"
+        every { textFunctions.boldSerif("hello") } throws ArrayIndexOutOfBoundsException()
+
+        val result = repository.transform("hello", TextTransformRepositoryImpl.INDEX_DECORATE_TEXT, 0, "")
+
+        assertTrue(result is Result.Error)
     }
 }

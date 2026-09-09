@@ -1,5 +1,6 @@
 package com.corphish.quicktools.usecases
 
+import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.repository.TextTransformRepository
 import javax.inject.Inject
 
@@ -11,13 +12,15 @@ class TextTransformUseCase @Inject constructor(
 ) {
     /**
      * Executes the text transformation.
+     * @return [Result.Success] with the transformed text, or [Result.Error] if the
+     * transformation could not be applied.
      */
     fun execute(
         text: String,
         primaryIndex: Int,
         secondaryIndex: Int,
         secondaryText: String
-    ): String {
+    ): Result<String> {
         return textTransformRepository.transform(text, primaryIndex, secondaryIndex, secondaryText)
     }
 }

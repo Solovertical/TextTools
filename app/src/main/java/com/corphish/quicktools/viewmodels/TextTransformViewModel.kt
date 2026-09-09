@@ -4,6 +4,7 @@ import android.content.res.Resources
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewModelScope
 import com.corphish.quicktools.R
+import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.usecases.ClipboardUseCase
 import com.corphish.quicktools.usecases.TextTransformUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -164,16 +165,18 @@ class TextTransformViewModel @Inject constructor (
 
     private fun transform() {
         viewModelScope.launch {
-            try {
-                _previewText.value = textTransformUseCase.execute(
-                    _mainText.value,
-                    _selectedPrimaryIndex.value,
-                    _selectedSecondaryIndex.value,
-                    _secondaryFunctionText.value
-                )
-            } catch (e: ArrayIndexOutOfBoundsException) {
-                _decorateTextErrorFlow.emit(true)
-                _previewText.value = _mainText.value
+            when (val result = textTransformUseCase.execute(
+                _mainText.value,
+                _selectedPrimaryIndex.value,
+                _selectedSecondaryIndex.value,
+                _secondaryFunctionText.value
+            )) {
+                is Result.Success -> _previewText.value = result.value
+                is Result.Error -> {
+                    _decorateTextErrorFlow.emit(true)
+                    _previewText.value = _mainText.value
+                }
+                is Result.Initial -> Unit
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.corphish.quicktools.repository
 
+import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.functions.TextFunctions
 import javax.inject.Inject
 
@@ -7,6 +8,19 @@ class TextTransformRepositoryImpl @Inject constructor(
     private val textFunctions: TextFunctions
 ) : TextTransformRepository {
     override fun transform(
+        text: String,
+        primaryIndex: Int,
+        secondaryIndex: Int,
+        secondaryText: String
+    ): Result<String> {
+        return try {
+            Result.Success(transformInternal(text, primaryIndex, secondaryIndex, secondaryText))
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            Result.Error
+        }
+    }
+
+    private fun transformInternal(
         text: String,
         primaryIndex: Int,
         secondaryIndex: Int,

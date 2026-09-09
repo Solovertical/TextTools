@@ -1,5 +1,6 @@
 package com.corphish.quicktools.usecases
 
+import com.corphish.quicktools.data.Result
 import com.corphish.quicktools.repository.TextTransformRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -24,15 +25,15 @@ class TextTransformUseCaseTest {
         val primaryIndex = 1
         val secondaryIndex = 2
         val secondaryText = "wrap"
-        val expectedResult = "(hello)"
+        val expectedResult = Result.Success("(hello)")
 
-        every { 
-            repository.transform(text, primaryIndex, secondaryIndex, secondaryText) 
+        every {
+            repository.transform(text, primaryIndex, secondaryIndex, secondaryText)
         } returns expectedResult
 
         val actualResult = useCase.execute(text, primaryIndex, secondaryIndex, secondaryText)
 
-        assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResult.value, (actualResult as Result.Success).value)
         verify { repository.transform(text, primaryIndex, secondaryIndex, secondaryText) }
     }
 }
