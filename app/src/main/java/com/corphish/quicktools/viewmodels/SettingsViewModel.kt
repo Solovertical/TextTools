@@ -1,7 +1,6 @@
 package com.corphish.quicktools.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.corphish.quicktools.BuildConfig
 import com.corphish.quicktools.data.Constants
 import com.corphish.quicktools.repository.AppMode
@@ -11,7 +10,6 @@ import com.corphish.quicktools.usecases.ManageTemplatesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,23 +37,19 @@ class SettingsViewModel @Inject constructor(
     val appMode: StateFlow<AppMode> = _appMode
 
     fun updatePrependCountryCodeEnabled(enabled: Boolean) {
-        viewModelScope.launch {
-            settingsRepository.setPrependCountryCodeEnabled(enabled)
-            _prependCountryCodeEnabled.value = enabled
-        }
+        settingsRepository.setPrependCountryCodeEnabled(enabled)
+        _prependCountryCodeEnabled.value = enabled
     }
 
     fun updatePrependCountryCode(code: String) {
-        viewModelScope.launch {
-            val match = Constants.COUNTRY_CODE_REGEX.matches(code)
-            _prependCountryCode.value = code
+        val match = Constants.COUNTRY_CODE_REGEX.matches(code)
+        _prependCountryCode.value = code
 
-            if (match) {
-                settingsRepository.setPrependCountryCode(code)
-                _prependCountryCodeIsValid.value = true
-            } else {
-                _prependCountryCodeIsValid.value = false
-            }
+        if (match) {
+            settingsRepository.setPrependCountryCode(code)
+            _prependCountryCodeIsValid.value = true
+        } else {
+            _prependCountryCodeIsValid.value = false
         }
     }
 
@@ -65,38 +59,28 @@ class SettingsViewModel @Inject constructor(
      * Ideally, we turn off country code prepend enabled if the country code is invalid.
      */
     fun invalidateCountryCodePrependSetting() {
-        viewModelScope.launch {
-            if (!_prependCountryCodeIsValid.value) {
-                updatePrependCountryCodeEnabled(false)
-                settingsRepository.setPrependCountryCode("")
-            }
+        if (!_prependCountryCodeIsValid.value) {
+            updatePrependCountryCodeEnabled(false)
+            settingsRepository.setPrependCountryCode("")
         }
     }
 
     fun updateDecimalPoints(count: Int) {
-        viewModelScope.launch {
-            settingsRepository.setDecimalPoints(count)
-            _decimalPoints.value = count
-        }
+        settingsRepository.setDecimalPoints(count)
+        _decimalPoints.value = count
     }
 
     fun updateEvaluateResultMode(mode: Int) {
-        viewModelScope.launch {
-            settingsRepository.setEvaluateResultMode(mode)
-            _evalResultMode.value = mode
-        }
+        settingsRepository.setEvaluateResultMode(mode)
+        _evalResultMode.value = mode
     }
 
     fun updateAppMode(mode: AppMode) {
-        viewModelScope.launch {
-            contextMenuOptionsRepository.setCurrentAppMode(mode)
-            _appMode.value = mode
-        }
+        contextMenuOptionsRepository.setCurrentAppMode(mode)
+        _appMode.value = mode
     }
 
     fun clearAllTemplates() {
-        viewModelScope.launch {
-            manageTemplatesUseCase.clearAllTemplates()
-        }
+        manageTemplatesUseCase.clearAllTemplates()
     }
 }

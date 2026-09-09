@@ -66,112 +66,97 @@ class TextTransformViewModel @Inject constructor (
     val decorateTextErrorFlow: SharedFlow<Boolean> = _decorateTextErrorFlow
 
     private fun determineSecondaryOptions() {
-        viewModelScope.launch {
-            _secondaryOptionList.value = when (_selectedPrimaryIndex.value) {
-                INDEX_WRAP_TEXT -> wrapOptions
-                INDEX_CHANGE_CASE -> caseOptions
-                INDEX_REMOVE_TEXT -> removeOptions
-                INDEX_ADD_PREFIX_SUFFIX -> prefixSuffixOptions
-                INDEX_DECORATE_TEXT -> decorateOptions
-                INDEX_LINE_BREAK -> lineBreakOptions
-                else -> listOf()
-            }
+        _secondaryOptionList.value = when (_selectedPrimaryIndex.value) {
+            INDEX_WRAP_TEXT -> wrapOptions
+            INDEX_CHANGE_CASE -> caseOptions
+            INDEX_REMOVE_TEXT -> removeOptions
+            INDEX_ADD_PREFIX_SUFFIX -> prefixSuffixOptions
+            INDEX_DECORATE_TEXT -> decorateOptions
+            INDEX_LINE_BREAK -> lineBreakOptions
+            else -> listOf()
         }
     }
 
     fun initializeText(text: String) {
-        viewModelScope.launch {
-            _mainText.value = text
-            _previewText.value = text
-            transform()
-        }
+        _mainText.value = text
+        _previewText.value = text
+        transform()
     }
 
     fun selectPrimaryIndex(index: Int) {
-        viewModelScope.launch {
-            _selectedPrimaryIndex.value = index
+        _selectedPrimaryIndex.value = index
 
-            // Select the appropriate choice for those supporting secondary functions
-            when (index) {
-                INDEX_WRAP_TEXT, INDEX_CHANGE_CASE, INDEX_REMOVE_TEXT, INDEX_ADD_PREFIX_SUFFIX, INDEX_DECORATE_TEXT, INDEX_REPLACE_WHITESPACE, INDEX_PREPEND_LINES, INDEX_APPEND_LINES -> {
-                    _selectedSecondaryIndex.value = 0
-                    _secondaryFunctionText.value = ""
-                }
-
-                INDEX_REPEAT_TEXT -> {
-                    // Default for repeat
-                    _secondaryFunctionText.value = "1"
-                }
-
-                INDEX_LINE_BREAK, INDEX_SQUEEZE -> {
-                    _selectedSecondaryIndex.value = 0
-                    _secondaryFunctionText.value = _mainText.value.length.toString()
-                }
+        // Select the appropriate choice for those supporting secondary functions
+        when (index) {
+            INDEX_WRAP_TEXT, INDEX_CHANGE_CASE, INDEX_REMOVE_TEXT, INDEX_ADD_PREFIX_SUFFIX, INDEX_DECORATE_TEXT, INDEX_REPLACE_WHITESPACE, INDEX_PREPEND_LINES, INDEX_APPEND_LINES -> {
+                _selectedSecondaryIndex.value = 0
+                _secondaryFunctionText.value = ""
             }
 
-            determineSecondaryOptions()
-            determineSecondaryFunctionTextProperties()
-            transform()
+            INDEX_REPEAT_TEXT -> {
+                // Default for repeat
+                _secondaryFunctionText.value = "1"
+            }
+
+            INDEX_LINE_BREAK, INDEX_SQUEEZE -> {
+                _selectedSecondaryIndex.value = 0
+                _secondaryFunctionText.value = _mainText.value.length.toString()
+            }
         }
+
+        determineSecondaryOptions()
+        determineSecondaryFunctionTextProperties()
+        transform()
     }
 
     fun selectSecondaryIndex(index: Int) {
-        viewModelScope.launch {
-            _selectedSecondaryIndex.value = index
-            determineSecondaryFunctionTextProperties()
-            transform()
-        }
+        _selectedSecondaryIndex.value = index
+        determineSecondaryFunctionTextProperties()
+        transform()
     }
 
     fun setSecondaryText(text: String) {
-        viewModelScope.launch {
-            _secondaryFunctionText.value = text
-            transform()
-        }
+        _secondaryFunctionText.value = text
+        transform()
     }
 
     private fun determineSecondaryFunctionTextProperties() {
-        viewModelScope.launch {
-            _secondaryFunctionTextVisible.value =
-                optionsWithSecondaryFunctionText.contains(_selectedPrimaryIndex.value)
+        _secondaryFunctionTextVisible.value =
+            optionsWithSecondaryFunctionText.contains(_selectedPrimaryIndex.value)
 
-            _secondaryFunctionTextLabel.value = when (_selectedPrimaryIndex.value) {
-                INDEX_WRAP_TEXT -> R.string.wrap_text
-                INDEX_REPEAT_TEXT -> R.string.repeat_text
-                INDEX_REMOVE_TEXT -> R.string.remove_text
-                INDEX_ADD_PREFIX_SUFFIX -> R.string.add_prefix_suffix
-                INDEX_LINE_BREAK -> listOf(
-                    R.string.after_certain_characters,
-                    R.string.after_certain_words
-                )[_selectedSecondaryIndex.value.coerceIn(0..1)]
+        _secondaryFunctionTextLabel.value = when (_selectedPrimaryIndex.value) {
+            INDEX_WRAP_TEXT -> R.string.wrap_text
+            INDEX_REPEAT_TEXT -> R.string.repeat_text
+            INDEX_REMOVE_TEXT -> R.string.remove_text
+            INDEX_ADD_PREFIX_SUFFIX -> R.string.add_prefix_suffix
+            INDEX_LINE_BREAK -> listOf(
+                R.string.after_certain_characters,
+                R.string.after_certain_words
+            )[_selectedSecondaryIndex.value.coerceIn(0..1)]
 
-                INDEX_SQUEEZE -> R.string.max_char_per_line
-                INDEX_REPLACE_WHITESPACE -> R.string.replace_whitespace
-                INDEX_PREPEND_LINES -> R.string.prepend_lines
-                INDEX_APPEND_LINES -> R.string.append_lines
-                else -> R.string.transform
+            INDEX_SQUEEZE -> R.string.max_char_per_line
+            INDEX_REPLACE_WHITESPACE -> R.string.replace_whitespace
+            INDEX_PREPEND_LINES -> R.string.prepend_lines
+            INDEX_APPEND_LINES -> R.string.append_lines
+            else -> R.string.transform
+        }
+
+        _secondaryFunctionTextInputType.value =
+            if (_selectedPrimaryIndex.value in listOf(
+                    INDEX_REPEAT_TEXT,
+                    INDEX_LINE_BREAK,
+                    INDEX_SQUEEZE
+                )
+            ) {
+                KeyboardType.Number
+            } else {
+                KeyboardType.Text
             }
 
-            _secondaryFunctionTextInputType.value =
-                if (_selectedPrimaryIndex.value in listOf(
-                        INDEX_REPEAT_TEXT,
-                        INDEX_LINE_BREAK,
-                        INDEX_SQUEEZE
-                    )
-                ) {
-                    KeyboardType.Number
-                } else {
-                    KeyboardType.Text
-                }
-
-            // RIP indent
-            _secondaryFunctionTextEnabled.value =
-                    // Disable when remove option is selected for preset characters
-                !((_selectedPrimaryIndex.value == INDEX_REMOVE_TEXT && _selectedSecondaryIndex.value > 2) ||
-
-                        // Disable for custom wrap
-                        _selectedPrimaryIndex.value == INDEX_WRAP_TEXT && _selectedSecondaryIndex.value != 5)
-        }
+        // Disable when remove option is selected for preset characters, or for custom wrap
+        _secondaryFunctionTextEnabled.value =
+            !((_selectedPrimaryIndex.value == INDEX_REMOVE_TEXT && _selectedSecondaryIndex.value > 2) ||
+                _selectedPrimaryIndex.value == INDEX_WRAP_TEXT && _selectedSecondaryIndex.value != 5)
     }
 
     private fun transform() {
