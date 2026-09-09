@@ -1,13 +1,5 @@
 package com.corphish.quicktools.modules
 
-import android.content.Context
-import com.corphish.quicktools.functions.ContextFunctions
-import com.corphish.quicktools.functions.FileFunctions
-import com.corphish.quicktools.functions.NumberFunctions
-import com.corphish.quicktools.functions.TextActionDeterminationFunctions
-import com.corphish.quicktools.functions.TextClassifierFunctions
-import com.corphish.quicktools.functions.TextFunctions
-import com.corphish.quicktools.functions.TextTemplateFunctions
 import com.corphish.quicktools.repository.ContextMenuOptionsRepository
 import com.corphish.quicktools.repository.ContextMenuOptionsRepositoryImpl
 import com.corphish.quicktools.repository.NumberAnalysisRepository
@@ -26,58 +18,53 @@ import com.corphish.quicktools.repository.TextTemplateRepository
 import com.corphish.quicktools.repository.TextTemplateRepositoryImpl
 import com.corphish.quicktools.repository.TextTransformRepository
 import com.corphish.quicktools.repository.TextTransformRepositoryImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Binds each repository interface to its implementation.
+ * All implementations here have an `@Inject` constructor, so a plain `@Binds` is
+ * sufficient (and preferred over `@Provides`) since no extra construction logic is needed.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
-    @Provides
+abstract class AppModule {
+    @Binds
     @Singleton
-    fun provideSettingsRepository(@ApplicationContext context: Context): SettingsRepository =
-        SettingsRepositoryImpl(context)
+    abstract fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTextRepository(fileFunctions: FileFunctions): TextRepository =
-        TextRepositoryImpl(fileFunctions)
+    abstract fun bindTextRepository(impl: TextRepositoryImpl): TextRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTextReplacementRepository(): TextReplacementRepository =
-        TextReplacementRepositoryImpl()
+    abstract fun bindTextReplacementRepository(impl: TextReplacementRepositoryImpl): TextReplacementRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTextTransformRepository(textFunctions: TextFunctions): TextTransformRepository =
-        TextTransformRepositoryImpl(textFunctions)
+    abstract fun bindTextTransformRepository(impl: TextTransformRepositoryImpl): TextTransformRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideNumberAnalysisRepository(numberFunctions: NumberFunctions): NumberAnalysisRepository =
-        NumberAnalysisRepositoryImpl(numberFunctions)
+    abstract fun bindNumberAnalysisRepository(impl: NumberAnalysisRepositoryImpl): NumberAnalysisRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideContextMenuOptionsRepository(@ApplicationContext context: Context): ContextMenuOptionsRepository =
-        ContextMenuOptionsRepositoryImpl(context)
+    abstract fun bindContextMenuOptionsRepository(impl: ContextMenuOptionsRepositoryImpl): ContextMenuOptionsRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTextActionRepository(contextFunctions: ContextFunctions, textActionDeterminationFunctions: TextActionDeterminationFunctions): TextActionRepository =
-        TextActionRepositoryImpl(contextFunctions, textActionDeterminationFunctions)
+    abstract fun bindTextActionRepository(impl: TextActionRepositoryImpl): TextActionRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTextAnalysisRepository(textFunctions: TextFunctions, textClassifierFunctions: TextClassifierFunctions, contextFunctions: ContextFunctions): TextAnalysisRepository =
-        TextAnalysisRepositoryImpl(textFunctions, textClassifierFunctions, contextFunctions)
+    abstract fun bindTextAnalysisRepository(impl: TextAnalysisRepositoryImpl): TextAnalysisRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTextTemplateRepository(@ApplicationContext context: Context, textTemplateFunctions: TextTemplateFunctions): TextTemplateRepository =
-        TextTemplateRepositoryImpl(context, textTemplateFunctions)
+    abstract fun bindTextTemplateRepository(impl: TextTemplateRepositoryImpl): TextTemplateRepository
 }

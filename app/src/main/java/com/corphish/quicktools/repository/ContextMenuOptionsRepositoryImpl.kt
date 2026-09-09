@@ -4,14 +4,16 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * Implementation of the [ContextMenuOptionsRepository].
  * This class is also responsible for enabling/disabling actual components.
  */
-class ContextMenuOptionsRepositoryImpl(private val context: Context) :
+class ContextMenuOptionsRepositoryImpl @Inject constructor(@ApplicationContext private val context: Context) :
     ContextMenuOptionsRepository {
     private val _modeKey = "context_menu_mode"
     private val _featuresKeySuffix = "context_menu_features_"
