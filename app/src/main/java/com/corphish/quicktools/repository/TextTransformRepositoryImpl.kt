@@ -1,6 +1,23 @@
 package com.corphish.quicktools.repository
 
 import com.corphish.quicktools.data.Result
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_ADD_PREFIX_SUFFIX
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_APPEND_LINES
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_CHANGE_CASE
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_DECORATE_TEXT
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_LINE_BREAK
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_NONE
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_NUMBER_LINES
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_PREPEND_LINES
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_REMOVE_TEXT
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_REPEAT_TEXT
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_REPLACE_WHITESPACE
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_REVERSE_LINES
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_REVERSE_TEXT
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_REVERSE_WORDS
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_SORT_LINES
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_SQUEEZE
+import com.corphish.quicktools.data.TextTransformIndex.INDEX_WRAP_TEXT
 import com.corphish.quicktools.functions.TextFunctions
 import javax.inject.Inject
 
@@ -163,25 +180,5 @@ class TextTransformRepositoryImpl @Inject constructor(
 
             else -> text
         }
-    }
-
-    companion object {
-        const val INDEX_NONE = 0
-        const val INDEX_WRAP_TEXT = 1
-        const val INDEX_CHANGE_CASE = 2
-        const val INDEX_SORT_LINES = 3
-        const val INDEX_REPEAT_TEXT = 4
-        const val INDEX_REMOVE_TEXT = 5
-        const val INDEX_ADD_PREFIX_SUFFIX = 6
-        const val INDEX_NUMBER_LINES = 7
-        const val INDEX_PREPEND_LINES = 8
-        const val INDEX_APPEND_LINES = 9
-        const val INDEX_REVERSE_TEXT = 10
-        const val INDEX_REVERSE_WORDS = 11
-        const val INDEX_REVERSE_LINES = 12
-        const val INDEX_DECORATE_TEXT = 13
-        const val INDEX_LINE_BREAK = 14
-        const val INDEX_SQUEEZE = 15
-        const val INDEX_REPLACE_WHITESPACE = 16
     }
 }
