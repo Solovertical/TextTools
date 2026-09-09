@@ -4,6 +4,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.edit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Implementation of the [ContextMenuOptionsRepository].
@@ -37,12 +39,14 @@ class ContextMenuOptionsRepositoryImpl(private val context: Context) :
         return AppMode.valueOf(mode)
     }
 
-    override fun setCurrentAppMode(mode: AppMode) {
-        _sharedPreferenceManager.edit {
-            putString(_modeKey, mode.name)
-        }
+    override suspend fun setCurrentAppMode(mode: AppMode) {
+        withContext(Dispatchers.IO) {
+            _sharedPreferenceManager.edit {
+                putString(_modeKey, mode.name)
+            }
 
-        switchModeTo(mode)
+            switchModeTo(mode)
+        }
     }
 
     private fun switchModeTo(mode: AppMode) {
@@ -99,22 +103,24 @@ class ContextMenuOptionsRepositoryImpl(private val context: Context) :
         return enabledFeatures
     }
 
-    override fun enableOrDisableFeature(feature: FeatureIds, enabled: Boolean) {
-        _sharedPreferenceManager.edit {
-            putBoolean(_featuresKeySuffix + feature.name, enabled)
-        }
+    override suspend fun enableOrDisableFeature(feature: FeatureIds, enabled: Boolean) {
+        withContext(Dispatchers.IO) {
+            _sharedPreferenceManager.edit {
+                putBoolean(_featuresKeySuffix + feature.name, enabled)
+            }
 
-        // Enable or disable the component if we are in multi mode
-        // For single no action required
-        val mode = getCurrentAppMode()
-        if (mode == AppMode.MULTI) {
-            val featureAlias = _multiFeatureAliasMapping[feature] ?: return
-            val component = ComponentName(context.packageName, featureAlias)
-            _packageManager.setComponentEnabledSetting(
-                component,
-                if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
+            // Enable or disable the component if we are in multi mode
+            // For single no action required
+            val mode = getCurrentAppMode()
+            if (mode == AppMode.MULTI) {
+                val featureAlias = _multiFeatureAliasMapping[feature] ?: return@withContext
+                val component = ComponentName(context.packageName, featureAlias)
+                _packageManager.setComponentEnabledSetting(
+                    component,
+                    if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP
+                )
+            }
         }
     }
 }

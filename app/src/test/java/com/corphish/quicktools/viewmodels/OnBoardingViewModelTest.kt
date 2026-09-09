@@ -4,6 +4,7 @@ import com.corphish.quicktools.MainDispatcherRule
 import com.corphish.quicktools.repository.AppMode
 import com.corphish.quicktools.repository.ContextMenuOptionsRepository
 import com.corphish.quicktools.repository.SettingsRepository
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -40,6 +41,6 @@ class OnBoardingViewModelTest {
     @Test
     fun testSetAppMode() = runTest {
         viewModel.setAppMode(AppMode.MULTI)
-        verify { contextOptionsRepository.setCurrentAppMode(AppMode.MULTI) }
+        coVerify { contextOptionsRepository.setCurrentAppMode(AppMode.MULTI) }
     }
 }

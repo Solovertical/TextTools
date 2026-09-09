@@ -1,6 +1,7 @@
 package com.corphish.quicktools.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.corphish.quicktools.BuildConfig
 import com.corphish.quicktools.data.Constants
 import com.corphish.quicktools.repository.AppMode
@@ -10,6 +11,7 @@ import com.corphish.quicktools.usecases.ManageTemplatesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -76,8 +78,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateAppMode(mode: AppMode) {
-        contextMenuOptionsRepository.setCurrentAppMode(mode)
-        _appMode.value = mode
+        viewModelScope.launch {
+            contextMenuOptionsRepository.setCurrentAppMode(mode)
+            _appMode.value = mode
+        }
     }
 
     fun clearAllTemplates() {

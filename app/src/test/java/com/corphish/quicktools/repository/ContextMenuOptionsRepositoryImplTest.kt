@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -36,7 +37,7 @@ class ContextMenuOptionsRepositoryImplTest {
     }
 
     @Test
-    fun testSetCurrentAppMode_Single() {
+    fun testSetCurrentAppMode_Single() = runTest {
         repository.setCurrentAppMode(AppMode.SINGLE)
         
         verify { editor.putString("context_menu_mode", AppMode.SINGLE.name) }
@@ -51,10 +52,10 @@ class ContextMenuOptionsRepositoryImplTest {
     }
 
     @Test
-    fun testSetCurrentAppMode_Multi() {
+    fun testSetCurrentAppMode_Multi() = runTest {
         // To test MULTI, we also need currently enabled features
         every { sharedPreferences.getBoolean(any(), true) } returns true
-        
+
         repository.setCurrentAppMode(AppMode.MULTI)
         
         verify { editor.putString("context_menu_mode", AppMode.MULTI.name) }
@@ -88,9 +89,9 @@ class ContextMenuOptionsRepositoryImplTest {
     }
 
     @Test
-    fun testEnableOrDisableFeature_MultiMode() {
+    fun testEnableOrDisableFeature_MultiMode() = runTest {
         every { sharedPreferences.getString("context_menu_mode", AppMode.SINGLE.name) } returns AppMode.MULTI.name
-        
+
         repository.enableOrDisableFeature(FeatureIds.EVAL, false)
         
         verify { editor.putBoolean("context_menu_features_EVAL", false) }

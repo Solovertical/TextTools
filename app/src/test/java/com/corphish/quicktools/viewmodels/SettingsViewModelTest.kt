@@ -5,6 +5,7 @@ import com.corphish.quicktools.repository.AppMode
 import com.corphish.quicktools.repository.ContextMenuOptionsRepository
 import com.corphish.quicktools.repository.SettingsRepository
 import com.corphish.quicktools.usecases.ManageTemplatesUseCase
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -81,7 +82,7 @@ class SettingsViewModelTest {
     @Test
     fun testUpdateAppMode() = runTest {
         viewModel.updateAppMode(AppMode.MULTI)
-        verify { contextMenuOptionsRepository.setCurrentAppMode(AppMode.MULTI) }
+        coVerify { contextMenuOptionsRepository.setCurrentAppMode(AppMode.MULTI) }
         assertEquals(AppMode.MULTI, viewModel.appMode.value)
     }
 

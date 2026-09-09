@@ -12,8 +12,10 @@ interface ContextMenuOptionsRepository {
 
     /**
      * Sets the current app mode.
+     * Suspends because this enables/disables activity-alias components via [android.content.pm.PackageManager],
+     * which performs blocking IPC and should not run on the main thread.
      */
-    fun setCurrentAppMode(mode: AppMode)
+    suspend fun setCurrentAppMode(mode: AppMode)
 
     /**
      * Returns the currently enabled feature set.
@@ -22,8 +24,9 @@ interface ContextMenuOptionsRepository {
 
     /**
      * Enables or disables a feature.
+     * Suspends for the same reason as [setCurrentAppMode].
      */
-    fun enableOrDisableFeature(feature: FeatureIds, enabled: Boolean)
+    suspend fun enableOrDisableFeature(feature: FeatureIds, enabled: Boolean)
 }
 
 enum class AppMode {

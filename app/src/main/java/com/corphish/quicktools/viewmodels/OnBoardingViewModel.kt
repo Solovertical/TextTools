@@ -1,12 +1,14 @@
 package com.corphish.quicktools.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.corphish.quicktools.repository.AppMode
 import com.corphish.quicktools.repository.ContextMenuOptionsRepository
 import com.corphish.quicktools.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +25,8 @@ class OnBoardingViewModel @Inject constructor(
     }
 
     fun setAppMode(mode: AppMode) {
-        contextOptionsRepository.setCurrentAppMode(mode)
+        viewModelScope.launch {
+            contextOptionsRepository.setCurrentAppMode(mode)
+        }
     }
 }
