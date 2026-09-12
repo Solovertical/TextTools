@@ -1,0 +1,5 @@
+- Added support for international number formats (e.g. comma as decimal separator) when evaluating expressions.
+- Fixed the splash screen not respecting dark theme on cold launch, causing a bright flash in dark environments.
+- Improved app responsiveness when saving text and switching context menu modes.
+- Added French translations.
+- Updated libraries.
